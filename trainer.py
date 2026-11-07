@@ -10,6 +10,8 @@ from peft import LoraConfig, get_peft_model, TaskType
 import os
 from dotenv import load_dotenv
 
+from huggingface_hub import login
+
 # Load HF TOKENS
 load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
@@ -59,9 +61,7 @@ print(dataset['train']['text'][0])
 
 model_path = "williamtom-3010/llama-it_claim_adjuster-sft"
 
-from huggingface_hub import login
-# read access token
-login(HF_TOKEN)
+
 
 # Load the tokenizer
 tokenizer = AutoTokenizer.from_pretrained(model_path)
