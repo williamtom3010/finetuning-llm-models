@@ -1,0 +1,6 @@
+transformers>=4.55.1
+accelerate 
+kernels
+triton>=3.4
+# ! pip uninstall -y torchvision
+torch==2.8.0 triton==3.4
