@@ -13,6 +13,7 @@ model_path = output_dir
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 import torch
+import os
 
 
 from dotenv import load_dotenv
@@ -20,9 +21,10 @@ from huggingface_hub import login
 
 # Load HF TOKENS
 load_dotenv()
-HF_TOKEN = os.getenv("HF_TOKEN")
+HF_READ_TOKEN = os.getenv("HF_READ_TOKEN")
+HF_WRITE_TOKEN  = os.getenv("HF_WRITE_TOKEN")
 # read access token
-login(HF_TOKEN)
+login(HF_READ_TOKEN)
 
 
 base_model = AutoModelForCausalLM.from_pretrained(
@@ -93,7 +95,7 @@ tokenizer = AutoTokenizer.from_pretrained(merged_model_path)
 ## Push model to hugging face
 from huggingface_hub import login
 # write access token
-login(HF_TOKEN)
+login(HF_WRITE_TOKEN)
 
 # Push to hub
 model.push_to_hub("williamtom-3010/llama-3.1_it_auditor-sft")
