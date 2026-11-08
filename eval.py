@@ -1,21 +1,17 @@
+import torch
+from transformers import pipeline
+import models
+
+
 ## Generate model response
 # good for llama 3.1-8b base model(cpt version)
 
 def generate_response(user_question, model, tokenizer, max_new_tokens=100):
-    # prompt = (
-    #     f"### Question:\n{user_question}\n\n"
-    #     "### Answer:\n"
-    # )
 
     prompt = (
         f"<s>[INST] Question:\n{user_question}\n\n [/INST]"
         "### Answer:\n" 
-    ) 
-
-    # prompt = (
-    #     f"Question:\n{user_question}\n\n"
-    #     "Answer:\n"
-    # )
+    )
 
 
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
@@ -42,7 +38,7 @@ def generate_response(user_question, model, tokenizer, max_new_tokens=100):
 
 
 # good for llama 3.1-8b instruct model
-from transformers import pipeline
+
 def generate_response(user_question, model, tokenizer):
     pipe = pipeline(
         "text-generation",
@@ -65,7 +61,7 @@ def generate_response(user_question, model, tokenizer):
     return response
 
 
+model, tokenizer = models.load_generator_model()
 user_question = "What should happen at the first claimant meeting?"
 response = generate_response(user_question, model, tokenizer)
-
 print("\nGenerated Answer:\n", response)

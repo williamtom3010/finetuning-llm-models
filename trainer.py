@@ -1,21 +1,20 @@
+import os
 import json
 import torch
 import pandas as pd
-from transformers import AutoModelForCausalLM
-from trl import SFTTrainer
-from datasets import load_dataset
-from transformers import AutoTokenizer
-from transformers import TrainingArguments
-from peft import LoraConfig, get_peft_model, TaskType
-import os
 from dotenv import load_dotenv
-
+from trl import SFTTrainer
 from huggingface_hub import login
+from datasets import load_dataset
+from peft import LoraConfig, get_peft_model, TaskType
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+
+
 
 # Load HF TOKENS
 load_dotenv()
-HF_TOKEN = os.getenv("HF_TOKEN")
-login(HF_TOKEN)
+HF_READ_TOKEN = os.getenv("HF_READ_TOKEN")
+login(HF_READ_TOKEN)
 
 
 csv_path = "data_files/new_augemneted_final_dataset.csv"
@@ -30,7 +29,7 @@ json_path = "json_folder/auditor.jsonl"
 df = pd.read_csv(csv_path)
 
 
-
+# add chat template to the dataset
 system_prompt = "You are a helpful assistant."
 
 with open(json_path, 'w', encoding='utf-8') as f:
@@ -113,6 +112,8 @@ model = get_peft_model(model, lora_config)
 
 print(tokenized_dataset)
 print(tokenized_dataset['train'])
+
+
 output_dir = "fine_tune_models/llama-it_auditor-sft"
 
 
